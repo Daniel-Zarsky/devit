@@ -2,7 +2,7 @@
 import logging
 import numpy as np
 from typing import Dict, List, Optional, Tuple
-from numpy import pad
+from numpy.lib import pad
 import torch
 from torch import nn
 from torch.nn import functional as F
