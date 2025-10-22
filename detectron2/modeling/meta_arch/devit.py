@@ -463,7 +463,7 @@ class OpenSetDetectorWithExamples(nn.Module):
         # class_prototypes_file
         #  prototypes, class_order_for_inference
         if isinstance(class_prototypes_file, str):
-            dct = torch.load(class_prototypes_file)
+            dct = torch.load(class_prototypes_file, weights_only=False)
             prototypes = dct['prototypes']
             if 'label_names' not in dct:
                 warnings.warn("label_names not found in class_prototypes_file, using COCO_SEEN_CLS + COCO_UNSEEN_CLS")
@@ -472,7 +472,7 @@ class OpenSetDetectorWithExamples(nn.Module):
             else:
                 prototype_label_names = dct['label_names']
         elif isinstance(class_prototypes_file, list):
-            p1, p2 = torch.load(class_prototypes_file[0]), torch.load(class_prototypes_file[1])
+            p1, p2 = torch.load(class_prototypes_file[0], weights_only=False), torch.load(class_prototypes_file[1], weights_only=False)
             if 'origin_label_names' in p1 or 'origin_label_names' in p2:
                 assert 'origin_label_names' in p2
                 oneshot_num_classes = len(p2['origin_label_names'])
@@ -533,7 +533,7 @@ class OpenSetDetectorWithExamples(nn.Module):
 
             self.test_class_mask = torch.as_tensor([c in mask_cids for c in all_cids])
 
-        bg_protos = torch.load(bg_prototypes_file)
+        bg_protos = torch.load(bg_prototypes_file, weights_only=False)
         if isinstance(bg_protos, dict):  # NOTE: connect to dict output of `generate_prototypes`
             bg_protos = bg_protos['prototypes']
         if len(bg_protos.shape) == 3:
@@ -630,7 +630,7 @@ class OpenSetDetectorWithExamples(nn.Module):
         self.one_shot_ref = None
 
         if use_one_shot:
-            self.one_shot_ref = torch.load(one_shot_reference)
+            self.one_shot_ref = torch.load(one_shot_reference, weights_only=False)
         
         # ---------- mask related layers --------- # 
         self.only_train_mask = only_train_mask if use_mask else False
